@@ -8,6 +8,9 @@ class Queue {
     };
   
     removeFromQueue = () => {
+      if (this.queue.length < 1) {
+        return null;
+      }
       return this.queue.shift();
     };
   
@@ -20,10 +23,11 @@ class Queue {
         return "No teams in queue!";
       }
 
-      let queueString = "";
+      let queueString = "Teams in queue:\n";
       let counter = 1;
       this.queue.forEach(e => {
-        queueString += `${counter}) ${e.name}\n`;
+        queueString += `${counter}) <@&${e.id}>\n`;
+        counter++;
       });
       return queueString;
     }

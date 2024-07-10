@@ -3,20 +3,20 @@ const TestQueue = require("../../data/test_queue")
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('req_inspect')
+		.setName('queue_add')
 		.setDescription('Add the team to the inspection queue.'),
 	async execute(interaction) {
         const teamRoles = ["Team 1", "Team 2","Team 3","Team 4","Team 5","Team 6","Team 7","Team 8","Team 9","Team 10","Team 11","Team 12" ]
         const cache = interaction.member.roles.cache;
         const userRoles = cache.map(r => r.name).filter(r => teamRoles.includes(r));
 
-        if (userRoles < 1) {
-            await interaction.reply("No team role!");
+        if (userRoles.length < 1) {
+            await interaction.reply("```No team role!```");
             return;
         }
 
-        if (userRoles > 1) {
-            await interaction.reply("Too many team roles!");
+        if (userRoles.length > 1) {
+            await interaction.reply("```Too many team roles!```");
             return;
         }
 
