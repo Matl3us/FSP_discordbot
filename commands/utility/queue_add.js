@@ -1,12 +1,22 @@
 const { SlashCommandBuilder } = require('discord.js');
-const TestQueue = require("../../data/test_queue")
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('queue_add')
-		.setDescription('Add the team to the inspection queue.'),
+		.setDescription('Add the team to the inspection queue.')
+        .addStringOption(option =>
+            option.setName('type')
+                .setDescription('The inspection type')
+                .setRequired(true)
+                .addChoices(
+                    { name: 'Mechanical', value: 'Mechanical' },
+                    { name: 'Queue2', value: 'Queue2' },
+                    { name: 'Queue3', value: 'Queue3' },
+                )),
 	async execute(interaction) {
-        const teamRoles = ["Team 1", "Team 2","Team 3","Team 4","Team 5","Team 6","Team 7","Team 8","Team 9","Team 10","Team 11","Team 12" ]
+        const chosenOption = interaction.options.getString("type");
+        console.log(chosenOption);
+        const teamRoles = ["Team1","Team2","Team3","Team4","Team5","Team6","Team7","Team8","Team9","Team10","Team11","Team12","Team13","Team14","Team15","Team16","Team17","Team18"]
         const cache = interaction.member.roles.cache;
         const userRoles = cache.map(r => r.name).filter(r => teamRoles.includes(r));
 
@@ -21,7 +31,18 @@ module.exports = {
         }
 
         const role = interaction.member.roles.cache.find(role => role.name === userRoles[0]);
-        TestQueue.addToQueue(role);
+
+        switch(chosenOption)
+        {
+            case "Mechanical":
+                break;
+            case "queue2":
+                break;
+            case "queue3":
+                break;
+            default:
+                await interaction.reply('Error occurred');
+        }
 		await interaction.reply(`Team with role <@&${role.id}> is added to the queue!`);
 	},
 };

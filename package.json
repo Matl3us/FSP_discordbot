@@ -9,7 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^5.17.0",
     "discord.js": "^14.15.3",
     "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "prisma": "^5.17.0"
   }
 }
