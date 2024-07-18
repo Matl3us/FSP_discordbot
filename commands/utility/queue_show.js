@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const TestQueue = require("../../data/test_queue")
+const prisma = require('../../prisma/prisma');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -10,23 +10,65 @@ module.exports = {
                 .setDescription('The inspection type')
                 .setRequired(true)
                 .addChoices(
-                    { name: 'Mechanical', value: 'Mechanical' },
-					{ name: 'Queue2', value: 'Queue2' },
-                    { name: 'Queue3', value: 'Queue3' },
-					{ name: 'all', value: 'all' },
+                    { name: 'Mechanical inspection', value: 'Mechanical' },
+                    { name: 'LV/HV inspection', value: 'LV/HV' },
+                    { name: 'Accumulator inspection', value: 'Accumulator' },
+					{ name: 'All inspections', value: 'all' },
                 )),
 	async execute(interaction) {
-        const message = TestQueue.getQueueString();
+        const chosenOption = interaction.options.getString("type");
+        let message;
+        let counter = 1;
 
 		switch(chosenOption)
         {
             case "Mechanical":
+                message = "Teams in mechanical inspection queue:\n";
+                const mechQueue = await prisma.mechanicalRequest.findMany({});
+                mechQueue.forEach(e => {
+                    message += `${counter}) ${e.team_name}\n`;
+                    counter++;
+                });
                 break;
-            case "queue2":
+            case "LV/HV":
+                message = "Teams in LV/HV inspection queue:\n";
+                const LV_HVQueue = await prisma.electricalRequest.findMany({})
+                LV_HVQueue.forEach(e => {
+                    message += `${counter}) ${e.team_name}\n`;
+                    counter++;
+                });
                 break;
-            case "queue3":
+            case "Accumulator":
+                message = "Teams in accumulator inspection queue:\n";
+                const AccQueue = await prisma.accumulatorRequest.findMany({})
+                AccQueue.forEach(e => {
+                    message += `${counter}) ${e.team_name}\n`;
+                    counter++;
+                });
                 break;
 			case "all":
+                const allMech = await prisma.mechanicalRequest.findMany({})
+                const allLV_HV =  await prisma.electricalRequest.findMany({})
+                const allAcc = await prisma.accumulatorRequest.findMany({})
+
+                message = "Teams in mechanical inspection queue:\n";
+                allMech.forEach(e => {
+                    message += `${counter}) ${e.team_name}\n`;
+                    counter++;
+                });
+                counter = 1;
+                message += "\nTeams in LV/HV inspection queue:\n";
+                allLV_HV.forEach(e => {
+                    message += `${counter}) ${e.team_name}\n`;
+                    counter++;
+                });
+                counter = 1;
+                message += "\nTeams in accumulator inspection queue:\n";
+                allAcc.forEach(e => {
+                    message += `${counter}) ${e.team_name}\n`;
+                    counter++;
+                });
+
 				break;
             default:
                 await interaction.reply('Error occurred');

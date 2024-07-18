@@ -1,5 +1,5 @@
-const { SlashCommandBuilder } = require('discord.js');
-const TestQueue = require("../../data/test_queue")
+const { SlashCommandBuilder, PermissionFlagsBits  } = require('discord.js');
+const prisma = require('../../prisma/prisma');
 
 module.exports = {
 	cooldown: 5,
@@ -11,29 +11,73 @@ module.exports = {
                 .setDescription('The inspection type')
                 .setRequired(true)
                 .addChoices(
-                    { name: 'Mechanical', value: 'Mechanical' },
-					{ name: 'Queue2', value: 'Queue2' },
-                    { name: 'Queue3', value: 'Queue3' },
-                )),
+                    { name: 'Mechanical inspection', value: 'Mechanical' },
+                    { name: 'LV/HV inspection', value: 'LV/HV' },
+                    { name: 'Accumulator inspection', value: 'Accumulator' },
+                ))
+        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers),
 	async execute(interaction) {
-        const role = TestQueue.removeFromQueue();
-		if (!role) {
-			await interaction.reply("There are no teams in queue!");
-			return;
-		}
+        const chosenOption = interaction.options.getString("type");
+        let requests;
+        let req;
 
 		switch(chosenOption)
         {
             case "Mechanical":
+                requests = await prisma.mechanicalRequest.findMany({
+                    orderBy: {
+                        timestamp: 'asc',
+                      },
+                })
+                if (requests.length == 0) {
+                    await interaction.reply("There are no teams in mechanical inspection queue!");
+			        return;
+                }
+
+                req = await prisma.mechanicalRequest.delete({
+                    where: {
+                        id: requests[0].id,
+                    }
+                })
                 break;
-            case "queue2":
+            case "LV/HV":
+                requests = await prisma.electricalRequest.findMany({
+                    orderBy: {
+                        timestamp: 'asc',
+                      },
+                })
+                if (requests.length == 0) {
+                    await interaction.reply("There are no teams in LV/HV inspection queue!");
+			        return;
+                }
+
+                req = await prisma.electricalRequest.delete({
+                    where: {
+                        id: requests[0].id,
+                    }
+                })
                 break;
-            case "queue3":
+            case "Accumulator":
+                requests = await prisma.accumulatorRequest.findMany({
+                    orderBy: {
+                        timestamp: 'asc',
+                      },
+                })
+                if (requests.length == 0) {
+                    await interaction.reply("There are no teams in accumulator inspection queue!");
+			        return;
+                }
+
+                req = await prisma.accumulatorRequest.delete({
+                    where: {
+                        id: requests[0].id,
+                    }
+                })
                 break;
             default:
                 await interaction.reply('Error occurred');
         }
 
-		await interaction.reply("Removed team with role " + `<@&${role.id}>` + " from the queue!");
+		await interaction.reply("Removed team " + `${req.team_name}` + " from the queue!");
 	},
 };

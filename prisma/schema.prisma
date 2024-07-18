@@ -10,5 +10,23 @@ datasource db {
 model MechanicalRequest {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   team_name String
-  timestamp DateTime
+  timestamp DateTime @default(now())
+}
+
+model ElectricalRequest {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  team_name String
+  timestamp DateTime @default(now())
+}
+
+model AccumulatorRequest {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  team_name String
+  timestamp DateTime @default(now())
+}
+
+model ChargingRequest {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  team_name String
+  timestamp DateTime @default(now())
 }
