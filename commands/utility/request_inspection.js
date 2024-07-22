@@ -18,43 +18,24 @@ module.exports = {
     ),
   async execute(interaction) {
     const chosenOption = interaction.options.getString("type");
-    const teamRoles = [
-      "Team1",
-      "Team2",
-      "Team3",
-      "Team4",
-      "Team5",
-      "Team6",
-      "Team7",
-      "Team8",
-      "Team9",
-      "Team10",
-      "Team11",
-      "Team12",
-      "Team13",
-      "Team14",
-      "Team15",
-      "Team16",
-      "Team17",
-      "Team18",
-    ];
-    const cache = interaction.member.roles.cache;
-    const userRoles = cache
-      .map((r) => r.name)
-      .filter((r) => teamRoles.includes(r));
+    const teams = await prisma.team.findMany({});
 
-    if (userRoles.length < 1) {
+    const cache = interaction.member.roles.cache.map((r) => r.name);
+
+    const team = teams.filter((t) => cache.includes(t.team_name));
+
+    if (team.length < 1) {
       await interaction.reply("```No team role!```");
       return;
     }
 
-    if (userRoles.length > 1) {
+    if (team.length > 1) {
       await interaction.reply("```Too many team roles!```");
       return;
     }
 
     const role = interaction.member.roles.cache.find(
-      (role) => role.name === userRoles[0]
+      (role) => role.name === team[0].team_name
     );
 
     switch (chosenOption) {
@@ -72,6 +53,7 @@ module.exports = {
         await prisma.mechanicalRequest.create({
           data: {
             team_name: role.name,
+            team_id: role.id,
           },
         });
         break;
@@ -89,6 +71,7 @@ module.exports = {
         await prisma.electricalRequest.create({
           data: {
             team_name: role.name,
+            team_id: role.id,
           },
         });
         break;
@@ -106,14 +89,17 @@ module.exports = {
         await prisma.accumulatorRequest.create({
           data: {
             team_name: role.name,
+            team_id: role.id,
           },
         });
         break;
       default:
         await interaction.reply("Error occurred");
     }
-    await interaction.reply(
-      `Team with role <@&${role.id}> is added to the queue!`
+    await interaction.reply(`Team <@&${role.id}> is added to the queue!`);
+    const channel = interaction.client.channels.cache.get(
+      "1264965239686828052"
     );
+    channel.send(`Team <@&${role.id}> is added to the ${chosenOption} queue! `);
   },
 };

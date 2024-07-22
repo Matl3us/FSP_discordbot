@@ -28,7 +28,7 @@ module.exports = {
         message = "Teams in mechanical inspection queue:\n";
         const mechQueue = await prisma.mechanicalRequest.findMany({});
         mechQueue.forEach((e) => {
-          message += `${counter}) ${e.team_name}\n`;
+          message += `${counter}) <@&${e.team_id}>\n`;
           counter++;
         });
         break;
@@ -36,7 +36,7 @@ module.exports = {
         message = "Teams in LV/HV inspection queue:\n";
         const LV_HVQueue = await prisma.electricalRequest.findMany({});
         LV_HVQueue.forEach((e) => {
-          message += `${counter}) ${e.team_name}\n`;
+          message += `${counter}) <@&${e.team_id}>\n`;
           counter++;
         });
         break;
@@ -44,7 +44,7 @@ module.exports = {
         message = "Teams in accumulator inspection queue:\n";
         const AccQueue = await prisma.accumulatorRequest.findMany({});
         AccQueue.forEach((e) => {
-          message += `${counter}) ${e.team_name}\n`;
+          message += `${counter}) <@&${e.team_id}>\n`;
           counter++;
         });
         break;
@@ -52,7 +52,7 @@ module.exports = {
         message = "Teams in charger queue:\n";
         const ChargerQueue = await prisma.chargingRequest.findMany({});
         ChargerQueue.forEach((e) => {
-          message += `${counter}) ${e.team_name}\n`;
+          message += `${counter}) <@&${e.team_id}>\n`;
           counter++;
         });
         break;
@@ -63,19 +63,19 @@ module.exports = {
 
         message = "Teams in mechanical inspection queue:\n";
         allMech.forEach((e) => {
-          message += `${counter}) ${e.team_name}\n`;
+          message += `${counter}) <@&${e.team_id}>\n`;
           counter++;
         });
         counter = 1;
         message += "\nTeams in LV/HV inspection queue:\n";
         allLV_HV.forEach((e) => {
-          message += `${counter}) ${e.team_name}\n`;
+          message += `${counter}) <@&${e.team_id}>\n`;
           counter++;
         });
         counter = 1;
         message += "\nTeams in accumulator inspection queue:\n";
         allAcc.forEach((e) => {
-          message += `${counter}) ${e.team_name}\n`;
+          message += `${counter}) <@&${e.team_id}>\n`;
           counter++;
         });
 

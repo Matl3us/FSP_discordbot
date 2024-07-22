@@ -7,26 +7,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Team {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  team_name String
+  class String
+}
+
 model MechanicalRequest {
   id String @id @default(auto()) @map("_id") @db.ObjectId
+  team_id String
   team_name String
   timestamp DateTime @default(now())
 }
 
 model ElectricalRequest {
   id String @id @default(auto()) @map("_id") @db.ObjectId
+  team_id String
   team_name String
   timestamp DateTime @default(now())
 }
 
 model AccumulatorRequest {
   id String @id @default(auto()) @map("_id") @db.ObjectId
+  team_id String
   team_name String
   timestamp DateTime @default(now())
 }
 
 model ChargingRequest {
   id String @id @default(auto()) @map("_id") @db.ObjectId
+  team_id String
   team_name String
   timestamp DateTime @default(now())
 }

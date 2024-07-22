@@ -104,7 +104,7 @@ module.exports = {
     }
 
     await interaction.reply(
-      "Removed team " + `${req.team_name}` + " from the queue!"
+      "Removed team " + `<@&${req.team_id}>` + " from the queue!"
     );
   },
 };
