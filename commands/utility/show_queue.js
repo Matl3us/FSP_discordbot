@@ -31,6 +31,9 @@ module.exports = {
           message += `${counter}) <@&${e.team_id}>\n`;
           counter++;
         });
+        if (counter === 1) {
+          message += "None\n";
+        }
         break;
       case "LV/HV":
         message = "Teams in LV/HV inspection queue:\n";
@@ -39,6 +42,9 @@ module.exports = {
           message += `${counter}) <@&${e.team_id}>\n`;
           counter++;
         });
+        if (counter === 1) {
+          message += "None\n";
+        }
         break;
       case "Accumulator":
         message = "Teams in accumulator inspection queue:\n";
@@ -47,14 +53,20 @@ module.exports = {
           message += `${counter}) <@&${e.team_id}>\n`;
           counter++;
         });
+        if (counter === 1) {
+          message += "None\n";
+        }
         break;
-        case "Charger":
+      case "Charger":
         message = "Teams in charger queue:\n";
         const ChargerQueue = await prisma.chargingRequest.findMany({});
         ChargerQueue.forEach((e) => {
           message += `${counter}) <@&${e.team_id}>\n`;
           counter++;
         });
+        if (counter === 1) {
+          message += "None\n";
+        }
         break;
       case "all":
         const allMech = await prisma.mechanicalRequest.findMany({});
@@ -66,19 +78,27 @@ module.exports = {
           message += `${counter}) <@&${e.team_id}>\n`;
           counter++;
         });
+        if (counter === 1) {
+          message += "None\n";
+        }
         counter = 1;
         message += "\nTeams in LV/HV inspection queue:\n";
         allLV_HV.forEach((e) => {
           message += `${counter}) <@&${e.team_id}>\n`;
           counter++;
         });
+        if (counter === 1) {
+          message += "None\n";
+        }
         counter = 1;
         message += "\nTeams in accumulator inspection queue:\n";
         allAcc.forEach((e) => {
           message += `${counter}) <@&${e.team_id}>\n`;
           counter++;
         });
-
+        if (counter === 1) {
+          message += "None\n";
+        }
         break;
       default:
         await interaction.reply("Error occurred");

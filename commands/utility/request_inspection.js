@@ -34,6 +34,11 @@ module.exports = {
       return;
     }
 
+    if (team[0].class === "CV" && (chosenOption === "LV/HV" || chosenOption === "Accumulator" )){
+      await interaction.reply("```Combustion vehicle does not have access to this type of inspection.```");
+      return;
+    }
+
     const role = interaction.member.roles.cache.find(
       (role) => role.name === team[0].team_name
     );

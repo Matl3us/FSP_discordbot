@@ -22,6 +22,11 @@ module.exports = {
       return;
     }
 
+    if (team[0].class === "CV"){
+      await interaction.reply("```Combustion vehicle does not have access to charger.```");
+      return;
+    }
+
     const role = interaction.member.roles.cache.find(
       (role) => role.name === team[0].team_name
     );
