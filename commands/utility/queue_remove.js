@@ -12,6 +12,7 @@ module.exports = {
         .setDescription("The inspection type")
         .setRequired(true)
         .addChoices(
+          { name: "Pre-inspection", value: "Pre-inspection" },
           { name: "Mechanical inspection", value: "Mechanical" },
           { name: "LV/HV inspection", value: "LV/HV" },
           { name: "Accumulator inspection", value: "Accumulator" },
@@ -25,6 +26,25 @@ module.exports = {
     let req;
 
     switch (chosenOption) {
+      case "Pre-inspection":
+        requests = await prisma.preInspection.findMany({
+          orderBy: {
+            timestamp: "asc",
+          },
+        });
+        if (requests.length == 0) {
+          await interaction.reply(
+            "There are no teams in pre-inspection queue!"
+          );
+          return;
+        }
+
+        req = await prisma.preInspection.delete({
+          where: {
+            id: requests[0].id,
+          },
+        });
+        break;
       case "Mechanical":
         requests = await prisma.mechanicalRequest.findMany({
           orderBy: {

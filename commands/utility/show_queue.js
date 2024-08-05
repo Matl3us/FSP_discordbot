@@ -26,7 +26,7 @@ module.exports = {
 
     switch (chosenOption) {
       case "Pre-Inspection":
-        message = "Teams in mechanical inspection queue:\n";
+        message = "Teams in pre-inspection inspection queue:\n";
         const preQueue = await prisma.preInspection.findMany({});
         preQueue.forEach((e) => {
           message += `${counter}) <@&${e.team_id}>\n`;
@@ -37,7 +37,7 @@ module.exports = {
         }
         break;
       case "Mechanical":
-        message = "Teams in Pre-inspection inspection queue:\n";
+        message = "Teams in mechanical inspection queue:\n";
         const mechQueue = await prisma.mechanicalRequest.findMany({});
         mechQueue.forEach((e) => {
           message += `${counter}) <@&${e.team_id}>\n`;
