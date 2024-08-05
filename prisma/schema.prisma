@@ -13,6 +13,13 @@ model Team {
   class String
 }
 
+model PreInspection {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  team_id String
+  team_name String
+  timestamp DateTime @default(now())
+}
+
 model MechanicalRequest {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   team_id String

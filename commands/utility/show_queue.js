@@ -11,6 +11,7 @@ module.exports = {
         .setDescription("The inspection type")
         .setRequired(true)
         .addChoices(
+          { name: "Pre-Inspection", value: "Pre-Inspection" },
           { name: "Mechanical inspection", value: "Mechanical" },
           { name: "LV/HV inspection", value: "LV/HV" },
           { name: "Accumulator inspection", value: "Accumulator" },
@@ -24,8 +25,19 @@ module.exports = {
     let counter = 1;
 
     switch (chosenOption) {
-      case "Mechanical":
+      case "Pre-Inspection":
         message = "Teams in mechanical inspection queue:\n";
+        const preQueue = await prisma.preInspection.findMany({});
+        preQueue.forEach((e) => {
+          message += `${counter}) <@&${e.team_id}>\n`;
+          counter++;
+        });
+        if (counter === 1) {
+          message += "None\n";
+        }
+        break;
+      case "Mechanical":
+        message = "Teams in Pre-inspection inspection queue:\n";
         const mechQueue = await prisma.mechanicalRequest.findMany({});
         mechQueue.forEach((e) => {
           message += `${counter}) <@&${e.team_id}>\n`;
