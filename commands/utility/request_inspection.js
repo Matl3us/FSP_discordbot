@@ -34,8 +34,13 @@ module.exports = {
       return;
     }
 
-    if (team[0].class === "CV" && (chosenOption === "LV/HV" || chosenOption === "Accumulator" )){
-      await interaction.reply("```Combustion vehicle does not have access to this type of inspection.```");
+    if (
+      team[0].class === "CV" &&
+      (chosenOption === "LV/HV" || chosenOption === "Accumulator")
+    ) {
+      await interaction.reply(
+        "```Combustion vehicle does not have access to this type of inspection.```"
+      );
       return;
     }
 

@@ -26,12 +26,12 @@ module.exports = {
       (role) => role.name === team[0].team_name
     );
 
-    const chargeExists = await prisma.preInspection.findFirst({
+    const inspectExists = await prisma.preInspection.findFirst({
       where: {
         team_name: role.name,
       },
     });
-    if (chargeExists) {
+    if (inspectExists) {
       await interaction.reply(`Team is already in queue!`);
       return;
     }

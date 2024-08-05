@@ -22,8 +22,10 @@ module.exports = {
       return;
     }
 
-    if (team[0].class === "CV"){
-      await interaction.reply("```Combustion vehicle does not have access to charger.```");
+    if (team[0].class === "CV") {
+      await interaction.reply(
+        "```Combustion vehicle does not have access to charger.```"
+      );
       return;
     }
 

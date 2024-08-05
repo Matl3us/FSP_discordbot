@@ -1,5 +1,4 @@
 // Require the necessary discord.js classes
-const express = require("express");
 const fs = require("node:fs");
 const path = require("node:path");
 const { Client, Collection, Events, GatewayIntentBits } = require("discord.js");
@@ -38,16 +37,7 @@ for (const folder of commandFolders) {
 // The distinction between `client: Client<boolean>` and `readyClient: Client<true>` is important for TypeScript developers.
 // It makes some properties non-nullable.
 client.once(Events.ClientReady, (readyClient) => {
-  const app = express();
-  const port = process.env.PORT || 4000;
-
-  app.get("/", (req, res) => {
-    res.send("Hello World!");
-  });
-
-  app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
-  });
+  console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 
 // Log in to Discord with your client's token
