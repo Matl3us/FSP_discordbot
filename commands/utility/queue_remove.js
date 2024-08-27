@@ -121,6 +121,7 @@ module.exports = {
         break;
       default:
         await interaction.reply("Error occurred");
+        return;
     }
 
     await interaction.reply(

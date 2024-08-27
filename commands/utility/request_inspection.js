@@ -105,6 +105,7 @@ module.exports = {
         break;
       default:
         await interaction.reply("Error occurred");
+        return;
     }
     await interaction.reply(`Team <@&${role.id}> is added to the queue!`);
     const channel = interaction.client.channels.cache.get(
